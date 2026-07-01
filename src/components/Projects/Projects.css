@@ -1,0 +1,527 @@
+/* ==================== PROJECTS SECTION ==================== */
+.projects {
+  padding: 8rem 2rem;
+  background: #0a0e13;
+  position: relative;
+  overflow: hidden;
+}
+
+.projects::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(46, 160, 67, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 90% 60%, rgba(63, 185, 80, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.projects-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* ==================== SECTION HEADER ==================== */
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-subtitle {
+  display: inline-block;
+  color: #2ea043;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 1rem;
+  background: rgba(46, 160, 67, 0.1);
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  border: 1px solid rgba(46, 160, 67, 0.2);
+}
+
+.section-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #f0f6fc;
+  margin-bottom: 1rem;
+}
+
+.title-underline {
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #2ea043, #3fb950);
+  margin: 0 auto 1.5rem;
+  border-radius: 2px;
+}
+
+.section-description {
+  color: #8b949e;
+  font-size: 1.1rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ==================== PROJECTS GRID ==================== */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 2rem;
+}
+
+/* ==================== PROJECT CARD ==================== */
+.project-card {
+  background: #161b22;
+  border: 1px solid #21262d;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(46, 160, 67, 0.05), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.project-card:hover {
+  border-color: #2ea043;
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 20px rgba(46, 160, 67, 0.1);
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+/* ==================== PROJECT PREVIEW ==================== */
+.project-preview {
+  height: 200px;
+  background: linear-gradient(135deg, #0d1117, #161b22);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-icon-wrapper {
+  width: 100px;
+  height: 100px;
+  background: rgba(46, 160, 67, 0.1);
+  border: 2px solid rgba(46, 160, 67, 0.3);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+}
+
+.project-card:hover .project-icon-wrapper {
+  transform: scale(1.1);
+  background: rgba(46, 160, 67, 0.2);
+}
+
+.project-emoji {
+  font-size: 3rem;
+  filter: grayscale(20%);
+  transition: transform 0.4s ease;
+}
+
+.project-card:hover .project-emoji {
+  transform: rotate(10deg) scale(1.1);
+  filter: grayscale(0%);
+}
+
+/* ==================== PREVIEW OVERLAY ==================== */
+.preview-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 17, 23, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover .preview-overlay {
+  opacity: 1;
+}
+
+.overlay-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.overlay-link {
+  width: 55px;
+  height: 55px;
+  background: #161b22;
+  border: 2px solid #2ea043;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: #2ea043;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.overlay-link:hover {
+  background: #2ea043;
+  color: white;
+  transform: scale(1.15);
+  box-shadow: 0 0 25px rgba(46, 160, 67, 0.4);
+}
+
+.preview-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.4rem 1rem;
+  background: rgba(46, 160, 67, 0.2);
+  color: #2ea043;
+  border: 1px solid rgba(46, 160, 67, 0.3);
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+/* ==================== PROJECT BODY ==================== */
+.project-body {
+  padding: 2rem;
+}
+
+.project-title {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #f0f6fc;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.folder-icon {
+  color: #2ea043;
+  font-size: 1.1rem;
+}
+
+.project-description {
+  color: #8b949e;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ==================== FEATURES ==================== */
+.project-features {
+  margin-bottom: 1.5rem;
+}
+
+.project-features h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #c9d1d9;
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+}
+
+.features-icon {
+  color: #2ea043;
+}
+
+.project-features ul {
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.project-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #8b949e;
+  font-size: 0.88rem;
+}
+
+.check-icon {
+  color: #2ea043;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+/* ==================== TECH STACK ==================== */
+.project-tech {
+  margin-bottom: 1.5rem;
+}
+
+.project-tech h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #c9d1d9;
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+}
+
+.tech-icon {
+  color: #2ea043;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tech-tag {
+  padding: 0.35rem 0.8rem;
+  background: #0d1117;
+  border: 1px solid #21262d;
+  color: #c9d1d9;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.project-card:hover .tech-tag {
+  border-color: #30363d;
+}
+
+.tech-tag:hover {
+  background: rgba(46, 160, 67, 0.1);
+  border-color: #2ea043;
+  color: #2ea043;
+}
+
+/* ==================== PROJECT ACTIONS ==================== */
+.project-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.project-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.github-btn {
+  background: #21262d;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+}
+
+.github-btn:hover {
+  background: #30363d;
+  border-color: #8b949e;
+  color: white;
+}
+
+.demo-btn {
+  background: rgba(46, 160, 67, 0.15);
+  color: #2ea043;
+  border: 1px solid rgba(46, 160, 67, 0.3);
+}
+
+.demo-btn:hover {
+  background: #2ea043;
+  color: white;
+  box-shadow: 0 5px 20px rgba(46, 160, 67, 0.3);
+}
+
+.btn-arrow {
+  font-size: 0.7rem;
+  transition: transform 0.3s ease;
+}
+
+.project-btn:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* ==================== GIT STATS ==================== */
+.git-stats {
+  display: flex;
+  gap: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #21262d;
+  font-size: 0.8rem;
+  color: #484f58;
+}
+
+.git-stats span {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ==================== GITHUB CTA ==================== */
+.github-cta {
+  text-align: center;
+  margin-top: 4rem;
+  padding: 3rem;
+  background: #161b22;
+  border: 1px solid #21262d;
+  border-radius: 20px;
+}
+
+.github-cta p {
+  color: #8b949e;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.github-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #2ea043, #3fb950);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(46, 160, 67, 0.3);
+}
+
+.github-cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(46, 160, 67, 0.4);
+}
+
+/* ==================== BACKGROUND SHAPES ==================== */
+.bg-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.floating-square {
+  position: absolute;
+  border: 2px solid rgba(46, 160, 67, 0.05);
+  animation: floatSquare 25s infinite;
+}
+
+.square-1 {
+  width: 300px;
+  height: 300px;
+  top: 15%;
+  right: -50px;
+  transform: rotate(45deg);
+}
+
+.square-2 {
+  width: 200px;
+  height: 200px;
+  bottom: 10%;
+  left: -30px;
+  transform: rotate(45deg);
+  animation-delay: -12s;
+}
+
+.dot-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle, rgba(46, 160, 67, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+}
+
+@keyframes floatSquare {
+  0%, 100% {
+    transform: translate(0, 0) rotate(45deg);
+  }
+  25% {
+    transform: translate(20px, -20px) rotate(50deg);
+  }
+  50% {
+    transform: translate(-10px, 15px) rotate(40deg);
+  }
+  75% {
+    transform: translate(-15px, -10px) rotate(48deg);
+  }
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 968px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .projects {
+    padding: 4rem 1rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .project-body {
+    padding: 1.5rem;
+  }
+
+  .project-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .project-preview {
+    height: 150px;
+  }
+
+  .project-emoji {
+    font-size: 2.5rem;
+  }
+
+  .github-cta {
+    padding: 2rem 1.5rem;
+  }
+}
