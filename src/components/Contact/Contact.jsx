@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import './Contact.css';
-import { personalInfo } from '../../portfolioData';
 import { 
   FaPaperPlane, 
   FaEnvelope, 
@@ -25,21 +24,37 @@ const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const response = await fetch('http://localhost:5000/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setIsSubmitted(true);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        
+        setTimeout(() => {
+          setIsSubmitted(false);
+        }, 5000);
+      } else {
+        alert('Error: ' + (data.message || 'Something went wrong'));
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to send message. Please check your connection and try again.');
+    } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setIsSubmitted(false);
-      }, 5000);
-    }, 1500);
+    }
   };
 
   const handleChange = (e) => {
@@ -81,8 +96,8 @@ const Contact = () => {
                   </div>
                   <div className="detail-content">
                     <span className="detail-label">Email</span>
-                    <a href={`mailto:${personalInfo.email}`} className="detail-value">
-                      {personalInfo.email}
+                    <a href="mailto:your.email@example.com" className="detail-value">
+                      your.email@example.com
                     </a>
                   </div>
                 </div>
@@ -93,7 +108,7 @@ const Contact = () => {
                   </div>
                   <div className="detail-content">
                     <span className="detail-label">Phone</span>
-                    <a href="tel:+251914855678" className="detail-value">
+                    <a href="tel:+251914857491" className="detail-value">
                       +251 91 485 7491
                     </a>
                   </div>
