@@ -83,9 +83,12 @@ const Hero = () => {
           <div className="hero-image-wrapper">
             <div className="hero-image-container">
               <div className="image-border"></div>
-              <div className="image-placeholder">
-                <span>B</span>
-              </div>
+              {/* CHANGE THIS URL TO YOUR IMAGE */}
+              <img
+                src="https://via.placeholder.com/350x350/2ea043/white?text=Your+Photo"
+                alt={personalInfo.name}
+                className="hero-image"
+              />
               <div className="floating-card card-1">
                 <span className="card-emoji">💡</span>
                 <span>Creative Mind</span>
@@ -98,7 +101,6 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
         <div className="scroll-indicator">
           <div className="mouse">
             <div className="wheel"></div>
@@ -107,7 +109,6 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Background Decorations */}
       <div className="bg-decoration">
         <div className="circle circle-1"></div>
         <div className="circle circle-2"></div>
