@@ -1,5 +1,6 @@
 import "./Hero.css";
 import { personalInfo } from "../../portfolioData";
+import profilePic from "../../assets/images/profile.jpg";
 import { FaGithub, FaLinkedin, FaTwitter, FaArrowRight } from "react-icons/fa";
 import { HiDownload } from "react-icons/hi";
 
@@ -83,9 +84,8 @@ const Hero = () => {
           <div className="hero-image-wrapper">
             <div className="hero-image-container">
               <div className="image-border"></div>
-              {/* CHANGE THIS URL TO YOUR IMAGE */}
               <img
-                src="https://via.placeholder.com/350x350/2ea043/white?text=Your+Photo"
+                src={profilePic}
                 alt={personalInfo.name}
                 className="hero-image"
               />
@@ -101,6 +101,7 @@ const Hero = () => {
           </div>
         </div>
 
+        {/* Scroll Indicator */}
         <div className="scroll-indicator">
           <div className="mouse">
             <div className="wheel"></div>
@@ -109,6 +110,7 @@ const Hero = () => {
         </div>
       </div>
 
+      {/* Background Decorations */}
       <div className="bg-decoration">
         <div className="circle circle-1"></div>
         <div className="circle circle-2"></div>
