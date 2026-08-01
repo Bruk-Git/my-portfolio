@@ -1,8 +1,8 @@
-import './Hero.css';
-import { personalInfo } from '../../portfolioData';
-import profilePic from '../../assets/images/profile.jpg';
-import { FaGithub, FaLinkedin, FaTwitter, FaArrowRight } from 'react-icons/fa';
-import { HiDownload } from 'react-icons/hi';
+import "./Hero.css";
+import { personalInfo } from "../../portfolioData";
+import profilePic from "../../assets/images/profile.jpg";
+import { FaGithub, FaLinkedin, FaTwitter, FaArrowRight } from "react-icons/fa";
+import { HiDownload } from "react-icons/hi";
 
 const Hero = () => {
   return (
@@ -20,10 +20,11 @@ const Hero = () => {
               <span className="cursor">|</span>
             </div>
             <p className="hero-description">
-              Passionate developer crafting beautiful, functional web experiences. 
-              I specialize in building modern applications with clean code and creative design.
+              Passionate developer crafting beautiful, functional web
+              experiences. I specialize in building modern applications with
+              clean code and creative design.
             </p>
-            
+
             <div className="hero-actions">
               <a href="#projects" className="btn btn-primary">
                 View My Work
@@ -51,13 +52,28 @@ const Hero = () => {
             </div>
 
             <div className="hero-social">
-              <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="social-link">
+              <a
+                href={personalInfo.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link"
+              >
                 <FaGithub />
               </a>
-              <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" className="social-link">
+              <a
+                href={personalInfo.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link"
+              >
                 <FaLinkedin />
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" className="social-link">
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link"
+              >
                 <FaTwitter />
               </a>
               <span className="divider"></span>
@@ -68,7 +84,11 @@ const Hero = () => {
           <div className="hero-image-wrapper">
             <div className="hero-image-container">
               <div className="image-border"></div>
-              <img src={profilePic} alt={personalInfo.name} className="hero-image" />
+              <img
+                src={profilePic}
+                alt={personalInfo.name}
+                className="hero-image"
+              />
               <div className="floating-card card-1">
                 <span className="card-emoji">💡</span>
                 <span>Creative Mind</span>
