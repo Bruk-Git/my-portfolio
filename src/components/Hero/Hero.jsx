@@ -30,7 +30,18 @@ const Hero = () => {
                 View My Work
                 <FaArrowRight className="btn-icon" />
               </a>
-              <a href="#contact" className="btn btn-outline">
+              <a
+                href="/resume.pdf"
+                download="Bruk-CV.pdf"
+                className="btn btn-outline"
+                onClick={(e) => {
+                  // Fallback if download attribute doesn't work
+                  if (navigator.msSaveBlob) {
+                    e.preventDefault();
+                    window.open("/resume.pdf", "_blank");
+                  }
+                }}
+              >
                 <HiDownload className="btn-icon" />
                 Download CV
               </a>
