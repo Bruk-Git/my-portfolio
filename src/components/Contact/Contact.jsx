@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import './Contact.css';
-import { 
-  FaPaperPlane, 
-  FaEnvelope, 
-  FaPhone, 
-  FaMapMarkerAlt, 
+import { useState } from "react";
+import "./Contact.css";
+import {
+  FaPaperPlane,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
   FaClock,
   FaUser,
   FaAt,
   FaCommentDots,
   FaCheckCircle,
-  FaArrowRight
-} from 'react-icons/fa';
+  FaArrowRight,
+} from "react-icons/fa";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -27,31 +27,33 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
-      const response = await fetch('http://localhost:5000/api/contact', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
       if (data.success) {
         setIsSubmitted(true);
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        
+        setFormData({ name: "", email: "", subject: "", message: "" });
+
         setTimeout(() => {
           setIsSubmitted(false);
         }, 5000);
       } else {
-        alert('Error: ' + (data.message || 'Something went wrong'));
+        alert("Error: " + (data.message || "Something went wrong"));
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Failed to send message. Please check your connection and try again.');
+      console.error("Error:", error);
+      alert(
+        "Failed to send message. Please check your connection and try again.",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -60,14 +62,13 @@ const Contact = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   return (
     <section id="contact" className="contact">
       <div className="contact-container">
-        
         {/* Section Header */}
         <div className="section-header">
           <span className="section-subtitle">Get In Touch</span>
@@ -79,14 +80,14 @@ const Contact = () => {
         </div>
 
         <div className="contact-content">
-          
           {/* LEFT SIDE - Contact Info */}
           <div className="contact-info-wrapper">
             <div className="contact-info-card">
               <h3>Let's Talk</h3>
               <p className="contact-info-description">
-                I'm currently available for freelance work and open to new opportunities. 
-                Feel free to reach out for collaborations or just a friendly chat!
+                I'm currently available for freelance work and open to new
+                opportunities. Feel free to reach out for collaborations or just
+                a friendly chat!
               </p>
 
               <div className="contact-details">
@@ -96,7 +97,10 @@ const Contact = () => {
                   </div>
                   <div className="detail-content">
                     <span className="detail-label">Email</span>
-                    <a href="mailto:your.email@example.com" className="detail-value">
+                    <a
+                      href="mailto:your.email@example.com"
+                      className="detail-value"
+                    >
                       your.email@example.com
                     </a>
                   </div>
@@ -130,7 +134,9 @@ const Contact = () => {
                   </div>
                   <div className="detail-content">
                     <span className="detail-label">Availability</span>
-                    <span className="detail-value status-available">Available for Work</span>
+                    <span className="detail-value status-available">
+                      Available for Work
+                    </span>
                   </div>
                 </div>
               </div>
@@ -152,8 +158,11 @@ const Contact = () => {
                     <FaCheckCircle className="success-icon" />
                   </div>
                   <h3>Message Sent!</h3>
-                  <p>Thank you for reaching out. I'll get back to you as soon as possible.</p>
-                  <button 
+                  <p>
+                    Thank you for reaching out. I'll get back to you as soon as
+                    possible.
+                  </p>
+                  <button
                     className="send-another-btn"
                     onClick={() => setIsSubmitted(false)}
                   >
@@ -163,7 +172,7 @@ const Contact = () => {
               ) : (
                 <form onSubmit={handleSubmit} className="contact-form">
                   <h3 className="form-title">Send a Message</h3>
-                  
+
                   <div className="form-row">
                     <div className="form-group">
                       <label htmlFor="name">
@@ -236,8 +245,8 @@ const Contact = () => {
                     </div>
                   </div>
 
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     className="submit-btn"
                     disabled={isSubmitting}
                   >
