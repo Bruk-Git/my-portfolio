@@ -98,10 +98,10 @@ const Contact = () => {
                   <div className="detail-content">
                     <span className="detail-label">Email</span>
                     <a
-                      href="mailto:your.email@example.com"
+                      href="mailto:bruktsegaye3@gmail.com"
                       className="detail-value"
                     >
-                      your.email@example.com
+                      bruktsegaye3@gmail.com
                     </a>
                   </div>
                 </div>
