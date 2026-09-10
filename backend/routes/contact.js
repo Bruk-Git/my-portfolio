@@ -1,10 +1,9 @@
 const express = require("express");
 const { body, validationResult } = require("express-validator");
 const nodemailer = require("nodemailer");
-const { pool } = require("../config/db"); // ← ADD THIS LINE
+const { pool } = require("../config/db");
 const router = express.Router();
 
-// Email transporter
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -13,7 +12,19 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// POST /api/contact - Save to MySQL AND send email
+// GET /api/contact - Test endpoint
+router.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Contact API is working!",
+    endpoints: {
+      post: "POST /api/contact",
+      getMessages: "GET /api/contact/messages",
+    },
+  });
+});
+
+// POST /api/contact - Send message
 router.post(
   "/",
   [
@@ -38,59 +49,42 @@ router.post(
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({
-          success: false,
-          errors: errors.array(),
-        });
+        return res.status(400).json({ success: false, errors: errors.array() });
       }
 
       const { name, email, subject, message } = req.body;
 
-      // Save to MySQL
       const [result] = await pool.execute(
         "INSERT INTO messages (name, email, subject, message) VALUES (?, ?, ?, ?)",
         [name, email, subject, message],
       );
 
       const messageId = result.insertId;
-      console.log(`✅ Message saved to database. ID: ${messageId}`);
+      console.log(`✅ Message saved. ID: ${messageId}`);
 
-      // Try to send email (optional)
+      // Try sending email (optional)
       try {
         await transporter.sendMail({
-          from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+          from: `"Portfolio" <${process.env.EMAIL_USER}>`,
           to: process.env.PERSONAL_EMAIL,
           subject: `Portfolio: ${subject}`,
-          html: `
-            <h2>New Message from Portfolio</h2>
-            <p><strong>From:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Subject:</strong> ${subject}</p>
-            <p><strong>Message:</strong></p>
-            <p>${message}</p>
-          `,
+          html: `<h2>New Message</h2><p><b>From:</b> ${name} (${email})</p><p><b>Subject:</b> ${subject}</p><p>${message}</p>`,
         });
-        console.log("📧 Email sent successfully");
+        console.log("📧 Email sent");
       } catch (emailError) {
-        console.log("⚠️ Email not sent:", emailError.message);
+        console.log("⚠️ Email skipped:", emailError.message);
       }
 
-      // Send success response
       res.status(201).json({
         success: true,
         message: "Message sent successfully!",
-        data: {
-          id: messageId,
-          name: name,
-          email: email,
-        },
+        data: { id: messageId, name, email },
       });
     } catch (error) {
       console.error("❌ Error:", error.message);
-      res.status(500).json({
-        success: false,
-        message: "Failed to send message. Please try again.",
-      });
+      res
+        .status(500)
+        .json({ success: false, message: "Failed to send message." });
     }
   },
 );
@@ -98,29 +92,34 @@ router.post(
 // GET /api/contact/messages - Get all messages
 router.get("/messages", async (req, res) => {
   try {
-    const { limit = 50, offset = 0 } = req.query;
-
     const [messages] = await pool.execute(
-      "SELECT id, name, email, subject, message, is_read, created_at FROM messages ORDER BY created_at DESC LIMIT ? OFFSET ?",
-      [parseInt(limit), parseInt(offset)],
+      "SELECT * FROM messages ORDER BY created_at DESC",
     );
-
-    const [countResult] = await pool.execute(
-      "SELECT COUNT(*) as total FROM messages",
-    );
-
-    res.json({
-      success: true,
-      count: messages.length,
-      total: countResult[0].total,
-      data: messages,
-    });
+    res.json({ success: true, count: messages.length, data: messages });
   } catch (error) {
-    console.error("Error:", error.message);
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch messages",
-    });
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// PUT /api/contact/messages/:id/read - Mark as read
+router.put("/messages/:id/read", async (req, res) => {
+  try {
+    await pool.execute("UPDATE messages SET is_read = TRUE WHERE id = ?", [
+      req.params.id,
+    ]);
+    res.json({ success: true, message: "Marked as read" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// DELETE /api/contact/messages/:id
+router.delete("/messages/:id", async (req, res) => {
+  try {
+    await pool.execute("DELETE FROM messages WHERE id = ?", [req.params.id]);
+    res.json({ success: true, message: "Message deleted" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 
