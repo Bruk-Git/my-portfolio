@@ -23,7 +23,9 @@ app.use(morgan("combined"));
 // CORS
 const allowedOrigins = [
   "http://localhost:5173",
+  "https://bruksportfolio.vercel.app/",
   "https://bruksportfolio.vercel.app",
+  "https://my-portfolio-git-main-brook5.vercel.app",
 ];
 
 app.use(
