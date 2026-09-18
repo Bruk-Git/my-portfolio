@@ -23,5 +23,16 @@ const testConnection = async () => {
     console.warn("⚠️  MySQL not connected:", error.message);
   }
 };
-
+const sendEmailWithRetry = async (mailOptions, retries = 3) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      await transporter.sendMail(mailOptions);
+      return true;
+    } catch (error) {
+      console.log(`Email attempt ${i + 1} failed`);
+      if (i === retries - 1) throw error;
+      await new Promise((r) => setTimeout(r, 2000 * (i + 1))); // Backoff
+    }
+  }
+};
 module.exports = { pool, testConnection };
