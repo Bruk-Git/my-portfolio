@@ -3,7 +3,7 @@ export const personalInfo = {
   title: "Junior Full Stack Developer",
   description:
     "Computer Science student at Admas University with a passion for web development. Currently pursuing my Bachelor's degree (2022-2026) and planning to advance with a Master's degree in the near future.",
-  email: "your.bruktsegaye3@gmail.com",
+  email: "bruktsegaye3@gmail.com",
   github: "https://github.com/Bruk-Git",
   linkedin: "https://www.linkedin.com/in/bruk-tsegaye-6386a0326/",
   twitter: "https://twitter.com/brkom_",

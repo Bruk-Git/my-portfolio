@@ -23,17 +23,17 @@ const Contact = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null); // ✅ error state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null); // clear old error
 
     try {
       const response = await fetch("http://localhost:5000/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
@@ -42,18 +42,16 @@ const Contact = () => {
       if (data.success) {
         setIsSubmitted(true);
         setFormData({ name: "", email: "", subject: "", message: "" });
-
-        setTimeout(() => {
-          setIsSubmitted(false);
-        }, 5000);
+        setTimeout(() => setIsSubmitted(false), 5000);
+      } else if (data.errors && data.errors.length > 0) {
+        // Show first validation message from backend
+        setError(data.errors[0].msg);
       } else {
-        alert("Error: " + (data.message || "Something went wrong"));
+        setError(data.message || "Something went wrong");
       }
-    } catch (error) {
-      console.error("Error:", error);
-      alert(
-        "Failed to send message. Please check your connection and try again.",
-      );
+    } catch (err) {
+      console.error("Error:", err);
+      setError("Failed to send. Please check your connection and try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -98,10 +96,10 @@ const Contact = () => {
                   <div className="detail-content">
                     <span className="detail-label">Email</span>
                     <a
-                      href="mailto:your.email@example.com"
+                      href="mailto:bruktsegaye3@gmail.com"
                       className="detail-value"
                     >
-                      your.email@example.com
+                      bruktsegaye3@gmail.com
                     </a>
                   </div>
                 </div>
@@ -172,6 +170,9 @@ const Contact = () => {
               ) : (
                 <form onSubmit={handleSubmit} className="contact-form">
                   <h3 className="form-title">Send a Message</h3>
+
+                  {/* ✅ ERROR MESSAGE DISPLAY */}
+                  {error && <div className="form-error">⚠️ {error}</div>}
 
                   <div className="form-row">
                     <div className="form-group">
