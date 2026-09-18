@@ -1,52 +1,31 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const { testConnection } = require("./config/db");
+const morgan = require("morgan");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
+// Load env FIRST
 dotenv.config();
 
+// Import DB and routes
+const { testConnection, pool } = require("./config/db");
 const contactRoutes = require("./routes/contact");
 const projectsRoutes = require("./routes/projects");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const rateLimit = require("express-rate-limit");
-const morgan = require("morgan");
-const helmet = require("helmet");
 
-// General API limiter
-const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // 100 requests per 15 min
-  message: { success: false, message: "Too many requests, try again later." },
-});
+// ==================== SECURITY ====================
+app.use(helmet());
+app.use(morgan("combined"));
 
-// Contact form limiter (stricter)
-const contactLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 5, // Only 5 messages per hour per IP
-  message: {
-    success: false,
-    message: "Too many messages. Try again in an hour.",
-  },
-});
-
+// CORS
 const allowedOrigins = [
   "http://localhost:5173",
   "https://bruksportfolio.vercel.app",
-  "https://yourdomain.com",
 ];
-const bcrypt = require("bcryptjs");
 
-// Hash password
-const hashedPassword = await bcrypt.hash("userPassword", 10);
-
-// Verify password
-const isValid = await bcrypt.compare("userInput", hashedPassword);
-app.use(morgan("combined"));
-app.use(helmet());
-app.use("/api/", apiLimiter);
-app.use("/api/contact", contactLimiter); // Applied to contact only
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -59,10 +38,32 @@ app.use(
     credentials: true,
   }),
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Welcome route
+// Body parsers
+app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
+
+// ==================== RATE LIMITING ====================
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { success: false, message: "Too many requests, try again later." },
+});
+
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  message: {
+    success: false,
+    message: "Too many messages. Try again in an hour.",
+  },
+});
+
+app.use("/api/", apiLimiter);
+
+// ==================== ROUTES ====================
+
+// Welcome
 app.get("/", (req, res) => {
   res.json({
     success: true,
@@ -71,30 +72,7 @@ app.get("/", (req, res) => {
   });
 });
 
-// Routes
-app.use("/api/contact", contactRoutes);
-app.use("/api/projects", projectsRoutes);
-
-// 404
-app.use((req, res) => {
-  res.status(404).json({ success: false, message: "Route not found" });
-});
-
-// Error handler
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ success: false, message: err.message });
-});
-
-// Start
-const startServer = async () => {
-  await testConnection();
-  app.listen(PORT, () => {
-    console.log(`\n🚀 Server running on http://localhost:${PORT}`);
-    console.log(`📧 Contact: http://localhost:${PORT}/api/contact`);
-    console.log(`📁 Projects: http://localhost:${PORT}/api/projects\n`);
-  });
-};
+// Health check (BEFORE 404)
 app.get("/health", async (req, res) => {
   try {
     await pool.execute("SELECT 1");
@@ -113,5 +91,33 @@ app.get("/health", async (req, res) => {
   }
 });
 
-app.use(errorHandler);
+// API routes
+app.use("/api/contact", contactLimiter, contactRoutes);
+app.use("/api/projects", projectsRoutes);
+
+// ==================== 404 ====================
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: "Route not found" });
+});
+
+// ==================== ERROR HANDLER ====================
+app.use((err, req, res, next) => {
+  console.error("Error:", err.message);
+  res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Server error",
+  });
+});
+
+// ==================== START ====================
+const startServer = async () => {
+  await testConnection();
+  app.listen(PORT, () => {
+    console.log(`\n🚀 Server running on http://localhost:${PORT}`);
+    console.log(`📧 Contact: http://localhost:${PORT}/api/contact`);
+    console.log(`📁 Projects: http://localhost:${PORT}/api/projects`);
+    console.log(`❤️  Health:  http://localhost:${PORT}/health\n`);
+  });
+};
+
 startServer();
